@@ -11,30 +11,33 @@ const number = process.argv[4]
 
 const url = `mongodb+srv://Ville_Savolainen:${password}@cluster0.ukt9v.mongodb.net/fullstack?retryWrites=true&w=majority`
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+mongoose.connect(url, {
+    useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true,
+})
 
 const personSchema = new mongoose.Schema({
     name: String,
-    number: String
+    number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
 
 const person = new Person({
-    name: name,
-    number: number
+    name,
+    number,
 })
 
 if (process.argv.length === 3) {
-    Person.find({}).then(res => {
+    Person.find({}).then((res) => {
         console.log('phonebook:')
-        res.forEach(person => {
+        // eslint-disable-next-line no-shadow
+        res.forEach((person) => {
             console.log(person.name, person.number)
         })
         mongoose.connection.close()
     })
 } else {
-    person.save().then(res => {
+    person.save().then(() => {
         console.log(`added ${name} number ${number} to phonebook`)
         mongoose.connection.close()
     })
